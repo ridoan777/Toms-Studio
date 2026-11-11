@@ -1,0 +1,79 @@
+<?php
+
+namespace App\Notifications\PushNotifications;
+
+use App\Helpers\Errors\LoggerAccess;
+use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Notification;
+use NotificationChannels\Fcm\FcmChannel;
+use NotificationChannels\Fcm\FcmMessage;
+use NotificationChannels\Fcm\Resources\Notification as FcmNotification;
+
+class NotePushNotify extends Notification
+{
+	use Queueable;
+
+	/**
+	 * Create a new notification instance.
+	 */
+	public function __construct(
+		public $isMultiple = false,	//single, multiple [single user or multi]
+		public $objectName,
+		public $actor = null,
+		public $actionFlag = null,
+	) {
+	}
+
+	/**
+	 * Get the notification's delivery channels.
+	 *
+	 * @return array<int, string>
+	 */
+	public function via(object $notifiable): array
+	{
+		return [FcmChannel::class];
+	}
+
+	/**
+	 * Get the array representation of the notification.
+	 *
+	 * @return array<string, mixed>
+	 */
+	public function toArray(object $notifiable): array
+	{
+		return [
+			//
+		];
+	}
+
+	public function toFcm(object $notifiable): FcmMessage
+	{
+		// LoggerAccess::showLog(['local', 'staging'], 'info', "FCM push has reached", [$notifiable]);
+		$pushTitle = "Hi! {$notifiable?->name}";
+		$objectName = $this->objectName ? "' {$this?->objectName}'" : null;
+		$roleName = $this->actor?->user_role ? "(" . ucfirst(str_replace('_', ' ', $this->actor->user_role)) . ")" : null;
+
+		$pushBody = "Your lesson note{$objectName} has been '{$this?->actionFlag?->value}' by {$this->actor?->name} {$roleName}. Go check!";
+
+		return FcmMessage::create()
+				->notification(
+					FcmNotification::create()
+						->title($pushTitle)
+						->body($pushBody)
+				)
+				->data([
+					'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
+					'sound' => 'default',
+					'priority' => 'high',
+					'timestamp' => now()->toIso8601String(),
+				])
+				// ->token('token')
+				->token($notifiable->fcm_token)
+				->topic('topic');
+	}
+}
+/*
+	// ------------------------- PUSH NOTIFTCATION -------------------------
+		PushNotificationHelper::singleUserPush($PROJECT_MANAGER, new ProjectSavePushNotify(false, $project, $USER));
+	// ------------------------- PUSH NOTIFTCATION -------------------------
+*/

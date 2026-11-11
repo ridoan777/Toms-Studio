@@ -1,0 +1,15 @@
+<?php
+require __DIR__.'/vendor/autoload.php';
+use Google\Auth\Credentials\ServiceAccountCredentials;
+
+$scopes = ['https://www.googleapis.com/auth/firebase.messaging'];
+// $path = __DIR__.'/storage/app/firebase/master_admin_firebase_ea885821f4.json';
+$path = __DIR__.'/storage/app/firebase/master_admin_firebase_956cdd8e50.json';
+$creds = new ServiceAccountCredentials($scopes, $path);
+$token = $creds->fetchAuthToken();
+echo $token['access_token']."\n";
+
+
+/*
+ya29.c.c0AYnqXljtRBT_joUwE7KCdTCATcbZfcmhPWgVsi96zSrIPa1cW_ad_A0yRtOMti9Fzu8Y71POnB1tls-VFrNLrcooiBkmLq5YUBk7J4a6v-XsNKET5HN07xu-Nde7E2qqferqIB9pGTbaligvM1YOfEXQwb7a8lSy3v3A1JxFwJ5mqChdGz4LCKisS7xA1658RWG-qK5yw4hA3hkQ7LWx9h9GqMFStxy-4bVImOWP2HRrVcZ3SMeRh2fJ-2PnjLNxZSAehf3DxHjElj2pv3ZxqvVok6r2l0tk1jmgZ5-2982mdJmGbaHu-BG5kxMRWiAXJRroGbUPe5Sd4N9ZEiO0mte89Vq3FHOROr51slw_rgEjfrG1K8K661EH384P15-gfR3jec1JbR6VZYz7crkJ6Z239BuegVazY5klYiiu3Qy1ymsV1rpiYXFV6txjsaFMjxJRSkoFk7k7UMw8xBx9VXcehmnV2zdx0lM-qfZsXolgXaflnp7vR88lop2iFsb0WqZXdY4kfZWhJX_a4uwv799S1M9VjdbsgmdXXjhUMMyQZMYIMIuwMk_wrqUZnk7U7tlIfpanuxrceIcdR1IRyvUWi-g2Fd0a7k6201dp69JpQBU4zk5UjUlQoQz3W28lWURbmjRUrMX1Ozuz7oy_ixUY6li51Q9mMUXu_S2U67MWFoo6YqjOabmidvg71zw-r0md19hIod2r22mo4jQWQ0Vjr4f-rJVZeRss54iWJn9cpJzf_yM-XbfJpW7-8VVdz5zWM8oZkIyUQnO-_1y2j9SfJ5auia-FdbMqQ73ByMllWtiRch6Blxs88YRczBWVYme02obp1_ZBSsg6tQ87oYgM71k4aRBsXrwbe7dvvbwu8xlmMZJ6uYSF6p7F2bvcO84Q7u-zjSrsaui55RprVbmaxkcJ2Ic5lsZy5hr9jZyV_e1r89zwe3SYuz2tchZkRgpcjxUbsjZ5l1qct1Ymynrv7RySzutUqxS-euVeX7ZuYU4_Vet9aYg
+*/

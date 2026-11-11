@@ -1,0 +1,67 @@
+body{
+   padding: 16px;
+   font-size: 12px;
+}
+h2 {
+    margin: 16px 0px !important;
+    font-size: 22px;
+}
+h3 {
+    margin: 16px 0px !important;
+    font-size: 20px;
+}
+h4 {
+    margin: 0;
+}
+.hr-line{
+    height: 0.5px;
+
+    margin: 1.25rem 0px;
+}
+.w-full {
+    width: 100%;
+}
+.w-half {
+    width: 50%;
+}
+.margin-top {
+    margin-top: 1.25rem;
+}
+.margin-bottom {
+    color: #ee4545;
+    margin-bottom: 1.25rem;
+}
+.margin-both {
+    margin: 1rem 0px 0px 0px ;
+}
+.cell-top {
+    padding: 1.25rem !important;
+}
+.cell-bottom {
+    color: #ee4545;
+    padding-bottom: 1.25rem !important;
+}
+.cell-both {
+    padding: 1rem 0px 0px 0px !important;
+}
+.footer {
+    font-size: 0.875rem;
+    padding: 1rem;
+    background-color: rgb(241,245,249);
+}
+table.tableWrapper {
+    width: 100%;
+    border-spacing: 0;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+.tableWrapper th,
+.tableWrapper td{
+    padding: 8px 4px;
+    border: 1px solid #000;
+}
+
+.text-center{
+    text-align: center;
+}

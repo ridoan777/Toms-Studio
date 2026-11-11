@@ -1,0 +1,42 @@
+{ // from home
+    "workbench.secondarySideBar.defaultVisibility": "hidden",
+    "workbench.sideBar.location": "right",
+    "editor.inlayHints.enabled": "off",
+    "editor.minimap.enabled": false,
+    "editor.fontSize": 13,
+
+    "[php]": {
+        "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+    },
+
+    "[blade]": {
+        "editor.defaultFormatter": "shufo.vscode-blade-formatter",
+          "bladeFormatter.format.cssNewlineBetweenSelectors": false
+    },
+
+    "bladeFormatter.format.wrapAttributes": "preserve", // compact attributes
+    "bladeFormatter.format.sortTailwindcssClasses": true, // auto-sort classes
+
+    "editor.codeLens": false,
+    "workbench.iconTheme": "material-icon-theme",
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "bladeFormatter.format.indentSize": 3,
+    "json.schemas": [
+
+    ],
+    "editor.tabSize": 3,
+    "[css]": {
+        "editor.defaultFormatter": "vscode.css-language-features"
+    },
+    "explorer.compactFolders": false,
+    "workbench.settings.applyToAllProfiles": [
+
+
+    ],
+
+}

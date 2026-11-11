@@ -1,0 +1,151 @@
+<x-app-layout>
+
+	@php
+		$breadCrumbs = [
+			['label' => 'Private', 'url' => 'backend_lesson_create', 'icon' => 'plus'],
+			['label' => 'Groups', 'url' => 'backend_group_lesson_create', 'icon' => 'plus'],
+			['label' => 'Lesson List', 'url' => 'backend_lesson_index', 'icon' => 'music'],
+			['label' => $singleLesson->lesson_uid, 'url' => 'backend_lesson_show', 'params' => [$singleLesson->id]],
+			['label' => 'Dues'],
+			['label' => 'Grouped Lesson List', 'url' => 'backend_group_lesson_index', 'icon' => 'music'],
+			['label' => 'Lesson Histories', 'url' => 'backend_lesson_histories_index', 'icon' => 'clock'],
+		];
+	@endphp
+
+	<x-indicators.breadcrumb :crumbs="$breadCrumbs" />
+
+	<x-indicators.page_header_widget pageName="Lesson Payable Dues" />
+
+	<x-indicators.alert-component message="Form Submission" />
+
+	<section class="p-4 bg-gray-50 rounded-lg dark:bg-neutral-800">
+		<div class="mb-4 flex items-center justify-between gap-4">
+			<div>
+				<h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ $singleLesson?->title ?? 'Lesson' }}
+				</h4>
+				<p class="text-sm text-gray-600 dark:text-gray-300">Only dues for this lesson are shown below.</p>
+			</div>
+			<a href="{{ route('backend_lesson_show', $singleLesson) }}" class="darkButton">Back To Lesson</a>
+		</div>
+
+		<div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-neutral-700">
+			<table class="min-w-full border-collapse">
+				<thead class="bg-gray-100 dark:bg-neutral-900">
+					<tr>
+						<th class="duesTableHead">#</th>
+						<th class="duesTableHead">DB ID</th>
+						<th class="duesTableHead">Payable UID</th>
+						<th class="duesTableHead">Week Start</th>
+						<th class="duesTableHead">Amount</th>
+						<th class="duesTableHead">Paid At</th>
+						<th class="duesTableHead">Cancelled</th>
+						<th class="duesTableHead">Created At</th>
+					</tr>
+				</thead>
+				<tbody class="bg-white dark:bg-neutral-800">
+					@forelse ($lessonPayables as $index => $payable)
+						<tr class="border-t border-gray-200 dark:border-neutral-700 duesTableRow"
+							onclick="window.location='{{ route('backend_billings_payable_show', $payable) }}'">
+							<td class="duesTableCell">{{ $lessonPayables->firstItem() + $index }}</td>
+							<td class="duesTableCell">{{ $payable->id }}</td>
+							<td class="duesTableCell break-all">{{ $payable->payable_uid }}</td>
+							<td class="duesTableCell">
+								{{ $payable->week_start ? \Carbon\Carbon::parse($payable->week_start)->format('d M Y') : 'N/A' }}
+							</td>
+							<td class="duesTableCell">${{ number_format((float)($payable->amount ?? 0), 2) }}</td>
+							<td class="duesTableCell">
+								{{ $payable->paid_at ? \Carbon\Carbon::parse($payable->paid_at)->format('d M Y, h:i A') : 'N/A' }}
+							</td>
+							<td class="duesTableCell">{{ $payable->is_cancelled ? 'Yes' : 'No' }}</td>
+							<td class="duesTableCell">
+								{{ $payable->created_at ? \Carbon\Carbon::parse($payable->created_at)->format('d M Y, h:i A') : 'N/A' }}
+							</td>
+						</tr>
+					@empty
+						<tr>
+							<td colspan="8" class="duesTableEmpty">No lesson payable dues found.</td>
+						</tr>
+					@endforelse
+				</tbody>
+			</table>
+		</div>
+
+		@if ($lessonPayables->hasPages())
+			<div class="mt-4 flex items-center justify-center gap-2 flex-wrap">
+				@if ($lessonPayables->onFirstPage())
+					<span
+						class="px-3 py-2 text-sm rounded border border-gray-200 text-gray-400 dark:border-neutral-700 dark:text-neutral-500">Previous</span>
+				@else
+					<a href="{{ $lessonPayables->previousPageUrl() }}"
+						class="px-3 py-2 text-sm rounded border border-gray-200 text-gray-700 hover:bg-gray-100 dark:border-neutral-700 dark:text-gray-200 dark:hover:bg-neutral-700">Previous</a>
+				@endif
+
+				@foreach ($lessonPayables->getUrlRange(1, $lessonPayables->lastPage()) as $page => $url)
+					@if ($page == $lessonPayables->currentPage())
+						<span class="px-3 py-2 text-sm rounded border border-blue-500 bg-blue-500 text-white">{{ $page }}</span>
+					@else
+						<a href="{{ $url }}"
+							class="px-3 py-2 text-sm rounded border border-gray-200 text-gray-700 hover:bg-gray-100 dark:border-neutral-700 dark:text-gray-200 dark:hover:bg-neutral-700">{{ $page }}</a>
+					@endif
+				@endforeach
+
+				@if ($lessonPayables->hasMorePages())
+					<a href="{{ $lessonPayables->nextPageUrl() }}"
+						class="px-3 py-2 text-sm rounded border border-gray-200 text-gray-700 hover:bg-gray-100 dark:border-neutral-700 dark:text-gray-200 dark:hover:bg-neutral-700">Next</a>
+				@else
+					<span
+						class="px-3 py-2 text-sm rounded border border-gray-200 text-gray-400 dark:border-neutral-700 dark:text-neutral-500">Next</span>
+				@endif
+			</div>
+		@endif
+	</section>
+
+</x-app-layout>
+
+<style>
+	.duesTableHead {
+		padding: 0.75rem 1rem;
+		text-align: left;
+		font-size: 0.75rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: rgb(55 65 81);
+	}
+
+	.duesTableCell {
+		text-align: center;
+		padding: 0.875rem 1rem;
+		font-size: 0.875rem;
+		color: rgb(55 65 81);
+		vertical-align: top;
+	}
+
+	.duesTableRow {
+		cursor: pointer;
+	}
+
+	.duesTableRow:hover {
+		background-color: rgb(243 244 246);
+	}
+
+	.duesTableEmpty {
+		padding: 1rem;
+		text-align: center;
+		font-size: 0.875rem;
+		color: rgb(107 114 128);
+	}
+
+	.dark .duesTableHead,
+	.dark .duesTableCell {
+		color: rgb(229 231 235);
+	}
+
+	.dark .duesTableRow:hover {
+		background-color: rgb(38 38 38);
+	}
+
+	.dark .duesTableEmpty {
+		color: rgb(209 213 219);
+	}
+</style>
